@@ -80,11 +80,49 @@ st.pyplot(fig)
 st.header('5. Data Visualization')
 st.write("**Penjelasan**: Memvisualisasikan distribusi harga untuk memahami pola umum di data.")
 
-# Visualisasi Distribusi Harga
+# Visualisasi Distribusi Harga Mobil
 st.subheader('Distribusi Harga Mobil')
-fig, ax = plt.subplots()
-sns.histplot(data['AskPrice'], kde=True, ax=ax)
-st.pyplot(fig)
+plt.figure(figsize=(10, 6))
+sns.histplot(data['AskPrice'], bins=30, kde=True)
+plt.xlabel('Harga (Price)')
+plt.ylabel('Frekuensi')
+st.pyplot(plt)
+
+# Distribusi Harga Berdasarkan Merek
+st.subheader('Distribusi Harga Berdasarkan Merek')
+if 'Brand' in data.columns:
+    top_brands = data['Brand'].value_counts().head(10).index
+    filtered_df = data[data['Brand'].isin(top_brands)]
+    plt.figure(figsize=(12, 6))
+    sns.boxplot(x='Brand', y='AskPrice', data=filtered_df, order=top_brands)
+    plt.xticks(rotation=45)
+    plt.xlabel('Merek Mobil')
+    plt.ylabel('Harga (Price)')
+    st.pyplot(plt)
+
+    # Distribusi Harga Berdasarkan Jarak Tempuh
+    st.subheader('Distribusi Harga Berdasarkan Jarak Tempuh')
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='kmDriven', y='AskPrice', data=data)
+    plt.xlabel('Jarak Tempuh (KmDriven)')
+    plt.ylabel('Harga (Price)')
+    st.pyplot(plt)
+
+    # Distribusi Harga Berdasarkan Umur Mobil
+    st.subheader('Distribusi Harga Berdasarkan Umur Mobil')
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='Age', y='AskPrice', data=data)
+    plt.xlabel('Umur Mobil (Tahun)')
+    plt.ylabel('Harga (Price)')
+    st.pyplot(plt)
+
+    # Distribusi Harga Berdasarkan Tahun Produksi
+    st.subheader('Distribusi Harga Berdasarkan Tahun Produksi')
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='Year', y='AskPrice', data=data)
+    plt.xlabel('Tahun Produksi')
+    plt.ylabel('Harga (Price)')
+    st.pyplot(plt)
 
 # Filter Data
 st.subheader('Filter Data')
@@ -93,15 +131,26 @@ min_price, max_price = st.slider('Rentang Harga', int(data['AskPrice'].min()), i
 filtered_data = data[(data['AskPrice'] >= min_price) & (data['AskPrice'] <= max_price)]
 st.write(filtered_data)
 
-# Dashboard 
-st.header('6. Dashboard')
-st.write('Gunakan filter di atas untuk menjelajahi data lebih dalam.')
-
 # Kesimpulan
-st.header('7. Kesimpulan')
-st.write("**Kesimpulan Analisis:**")
-st.write("1. Harga mobil bekas memiliki korelasi negatif dengan umur kendaraan. Semakin tua kendaraan, harganya cenderung lebih murah.")
-st.write("2. Kilometer yang telah ditempuh (km_driven) juga mempengaruhi harga, di mana kendaraan dengan jarak tempuh lebih tinggi cenderung memiliki harga lebih rendah.")
-st.write("3. Tahun produksi memiliki korelasi positif dengan harga. Mobil yang lebih baru cenderung memiliki harga yang lebih tinggi.")
-st.write("4. Distribusi harga menunjukkan adanya variasi besar, sehingga pemilihan harga yang tepat dapat dibantu dengan filter yang disediakan di dashboard.")
-st.write("Gunakan dashboard dan visualisasi ini untuk mengeksplorasi lebih lanjut pola harga mobil bekas berdasarkan berbagai variabel.")
+st.header('Kesimpulan dan Rekomendasi')
+st.header("**Kesimpulan Analisis:**")
+st.write("Distribusi Harga Mobil:")
+st.write("1. Harga mobil bekas memiliki distribusi yang cenderung condong ke kiri, menunjukkan bahwa sebagian besar mobil berada di kisaran harga yang lebih rendah.")
+st.write("2. Ini menandakan pasar mobil bekas lebih didominasi oleh kendaraan dengan harga terjangkau.")
+st.write("Harga Berdasarkan Merek:")
+st.write("1. Merek mobil memiliki pengaruh signifikan terhadap harga.")
+st.write("2. Beberapa merek populer dengan volume penjualan tinggi cenderung memiliki harga yang lebih stabil, sedangkan merek premium menunjukkan variasi harga yang lebih besar.")
+st.write("3. Merek tertentu seperti Honda dan Toyota mendominasi pasar dengan rentang harga yang bervariasi.")
+st.write("Harga Berdasarkan Jarak Tempuh (KmDriven):")
+st.write("1. Terdapat korelasi negatif antara jarak tempuh dan harga mobil.")
+st.write("2. Mobil dengan jarak tempuh lebih tinggi cenderung memiliki harga yang lebih rendah, mencerminkan pengaruh pemakaian terhadap nilai jual kembali kendaraan.")
+st.write("Harga Berdasarkan Umur Mobil:")
+st.write("1. Mobil yang lebih tua cenderung memiliki harga yang lebih rendah.")
+st.write("2. Penurunan harga cukup signifikan setelah 5–10 tahun, menunjukkan bahwa umur mobil menjadi faktor penentu dalam penilaian harga.")
+st.write("Harga Berdasarkan Tahun Produksi:")
+st.write("1. Mobil dengan tahun produksi yang lebih baru memiliki harga yang lebih tinggi.")
+st.write("2. Ini menunjukkan bahwa teknologi dan fitur terbaru yang tersedia pada model baru meningkatkan nilai jual mobil.")
+st.header("**Rekomendasi:**")
+st.write("1. Pembeli yang mencari mobil dengan harga terjangkau bisa mempertimbangkan mobil dengan jarak tempuh dan umur lebih tinggi.")
+st.write("2. Penjual dapat menargetkan pasar premium untuk mobil baru dengan jarak tempuh rendah dan merek terkenal guna mendapatkan harga yang lebih baik.")
+st.write("3. Merek mobil populer seperti Honda dan Toyota tetap menjadi pilihan utama bagi pembeli dengan preferensi harga yang stabil.")
