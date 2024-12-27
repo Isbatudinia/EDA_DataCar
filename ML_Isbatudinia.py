@@ -30,11 +30,24 @@ st.write('Dataset berhasil dimuat!')
 st.write(data.head())
 
 # Data Availability Checking
-st.subheader('2. Data Availability Checking')
+st.subheader('2. Data Availability Checking (Handling Missing Values)')
 st.write("**Penjelasan**: Mengecek apakah data memiliki nilai kosong atau tipe data yang tidak sesuai.")
 st.write('Informasi Dataset:')
 st.write(data.info())
-st.write('Jumlah Data Kosong:')
+st.write("Jumlah data null sebelum penanganan:")
+st.write(data.isnull().sum())
+
+# Mengisi nilai null pada kolom numerik dengan median
+num_cols = data.select_dtypes(include=['float64', 'int64']).columns
+for col in num_cols:
+    data[col].fillna(data[col].median(), inplace=True)
+
+# Mengisi nilai null pada kolom kategorikal dengan modus
+cat_cols = data.select_dtypes(include=['object']).columns
+for col in cat_cols:
+    data[col].fillna(data[col].mode()[0], inplace=True)
+
+st.write("Jumlah data null setelah penanganan:")
 st.write(data.isnull().sum())
 
 # Descriptive Statistics (Optional)
