@@ -1,12 +1,4 @@
-{
- "cells": [],
- "metadata": {},
- "nbformat": 4,
- "nbformat_minor": 5
-}
 streamlit
 matplotlib
 pandas
 numpy
-scikit-learn
-seaborn
